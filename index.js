@@ -4,6 +4,7 @@ const PORT =3000;
 app.set('views','views');
 app.set('view engine','ejs');
 const users = require("./routes/user");
+const products = require("./routes/products");
 const error = require("./utilities/error");
 
 //work with post and patch req.body
@@ -13,6 +14,7 @@ app.use(express.static('public'));
 
 
 app.use("/users", users);
+app.use("/products",products);
 
 
 app.get("/",(req,res) => {

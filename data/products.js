@@ -1,3 +1,4 @@
+const products =
 [
   {
   id: 1,
@@ -162,3 +163,5 @@
   image: "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg",
   }
   ]
+
+  module.exports = products;
