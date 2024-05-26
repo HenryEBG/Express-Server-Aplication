@@ -1,4 +1,4 @@
-[
+const users = [
   {
   address: {
   city: "kilcoole",
@@ -170,3 +170,5 @@
   phone: "1-104-001-4567",
   }
   ]
+
+  module.exports = users;
