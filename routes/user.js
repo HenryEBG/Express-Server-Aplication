@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const users = require("../data/users");
 
-//user autenticate
+//user authenticate middleware
+//validate user when login
 const auth= ((req,res,next)=>{
   if(req.body.username&&req.body.password){
     if (users.find((u) => u.username == req.body.username && u.password==req.body.password)){
