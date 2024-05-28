@@ -8,10 +8,9 @@
 
 
 //import files to delete, to add o r modify and get information from the API
-//import {deleteProduct} from './apiDeleteConsumers.js';
-//import { addProduct,modifyProduct } from './apiPostConsumers.js';
+import {addCart} from './apiCartProducts.js';
+//import { add } from './apiPostConsumers.js';
 import { getProducts,getCategories,productsByCategories,productById } from '/js/apiGetConsumers.js';
-
 
 //Nodes to the product Container and to the Categories select
 const productContainer = document.getElementById("productContainer");
@@ -23,10 +22,6 @@ const selectCategories = document.getElementById("categories");
 //const cards = document.getElementsByClassName("card");
 
 
-// let newProductID=21;
-// const newProducts=[];
-// const deletedProducts=[];
-// const modifiedProducts=[];
 
 //Call to the function to get the products using API's
 getProducts();
@@ -46,20 +41,43 @@ selectCategories.addEventListener('change', productsByCategories)
  * checks what button *delete or update* was clicked to decide what
  * action to do.
  */
-// function modifyDeleteProduct(event){
-//   event.preventDefault();
+function addProduct(event){
+  event.preventDefault();
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  //console.log($_POST['username'])
+  const raw = JSON.stringify(
+    {
+      "id": event.target.id
+    }
+  );
   
-//   if(event.target.id.substring(0,6)==="delete"){
-//     deleteProduct(parseInt(event.target.id.substring(7,8)))
-//   }
-//   else {
+  const requestOptions = {
+    method: "PATCH",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+  };
+  
+  fetch("http://localhost:3000/carts/add", requestOptions)
+    .then((response) => response.text())
+    .then((result) =>{ console.log(result)
+    //indicate that the product was added
+    const addAlertNode=document.getElementById("addAlert")
+    addAlertNode.textContent=`The register Number ${event.target.id} was added (only en actual session).`
+    addAlertNode.style.display="block"
+        setTimeout (() =>{
+          addAlertNode.style.display="none"
+          }, 5000) }
+  )
+    .catch((error) => console.error(error));
 
-//     productById(parseInt(event.target.id.substring(7,8)))
-//   }
-// }
+
+  
+}
 
 //event listenter occur when a button of any product is clicked.
-//productContainer.addEventListener('click',modifyDeleteProduct)
+productContainer.addEventListener('click',addProduct)
 
 //event listener that calls an API when the form in the modal
 //is subimited to send the product data to be modify with the

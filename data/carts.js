@@ -1,3 +1,4 @@
+const carts =
 [
   {
   id: 1,
@@ -112,3 +113,5 @@
 
   }
   ]
+
+  module.exports = carts;

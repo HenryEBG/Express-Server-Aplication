@@ -14,4 +14,5 @@ router
 .get((req,res)=>{
 res.send(products.filter((p)=>{if(p.category==req.params.nameCategory) return(p)}))
 });
+
 module.exports = router;

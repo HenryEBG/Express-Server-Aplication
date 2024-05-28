@@ -34,11 +34,15 @@ function productDisplay(products,erase) {
         </div>
     </div>
     <!-- Product actions-->
+    <form action="http://localhost:3000/carts/add" method="PATCH" id="form${product.id}"> 
+    <input type="hidden" name="id" value="${product.id}" />
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent d-flex justify-content-center ">
-        <div class="text-center"><a class="btn btn-outline-dark mt-auto ml-2" id="modify ${product.id}"  data-bs-toggle="modal"
-        data-bs-target="#modal2" href="#">Modify</a></div>
-        <div class="text-center"><a class="btn btn-outline-dark mt-auto ml-2" id="delete ${product.id}" href="#">Delete</a></div>
+        <div class="text-center">
+        <input class="btn btn-outline-dark mt-auto ml-2" type="submit" id="${product.id}"value="Add to Cart">
+        
+        </div>
     </div>
+    </form>
 </div>`
 productContainer.appendChild(card);
   });

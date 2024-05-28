@@ -5,6 +5,7 @@ app.set('views','views');
 app.set('view engine','ejs');
 const users = require("./routes/user");
 const products = require("./routes/products");
+const carts = require("./routes/carts");
 const error = require("./utilities/error");
 
 //work with post and patch req.body
@@ -15,6 +16,7 @@ app.use(express.static('public'));
 
 app.use("/users", users);
 app.use("/products",products);
+app.use("/carts",carts);
 
 
 app.get("/",(req,res) => {
