@@ -1,9 +1,13 @@
+//creating the router instance
 const express = require('express');
 const router = express.Router();
+
+//creating arrays with the data of the users
 const users = require("../data/users");
 const User = require("../data/user");
 
 //user authenticate middleware
+
 //validate user when login
 const auth = ((req, res, next) => {
   if (User.length<1) {
@@ -27,17 +31,22 @@ const auth = ((req, res, next) => {
   next();
 });
 
+//generate the template for the login page
 router
   .route("/login")
-  .get((req, res) => {
+  .get((req, res,next) => {
     res.render("login", { title: "Login Customer Fake Store" });
-
+    next();
   });
 
+  //generate the template for the store page
+  //the auth middleware is isued for this page
+  //to validate the user add the username and password
 router
   .route("/store")
-  .post(auth, (req, res) => {
+  .post(auth, (req, res,next) => {
     res.render("store", { title: "Welcomte to my Fake Store" });
+    next();
   });
 
 module.exports = router;
