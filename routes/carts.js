@@ -2,11 +2,44 @@ const express = require('express');
 const router = express.Router();
 const carts = require("../data/carts");
 const User = require("../data/user");
+const products = require("../data/products");
+
+router
+  .route("/")
+  .get((req,res,next)=> {
+    res.render("cart", { title: "Thanks for buying",user: User[0].id });
+    next();   
+  });
+
+router
+.route("/products/:id")
+.get((req,res,next) => {
+  const existUserCart = carts.find((c) => c.userId == req.params.id)
+  if(existUserCart===undefined){
+    res.send([]);
+    next();
+    
+  } else {
+    const listProducts=[];
+    existUserCart.products.forEach((p,i) => {
+        const foundProduct = products.find((product)=> product.id == p.productId )
+        if(foundProduct){
+          listProducts.push({product : foundProduct,quantity : p.quantity})
+        }
+    }   )
+
+    res.send(listProducts);
+    next();
+  }
+})
+
+router
+.route("/productsShow")
 
 router
   .route("/add")
   .patch((req, res) => {
-    console.log(req.body.id)
+  //  console.log(req.body.id)
       //create a const to save temporarly the cart of this user if exists
     const existUserCart = carts.find((c) => c.userId == User[0].id)
     if(existUserCart===undefined){//doesn't exist a cart for this user

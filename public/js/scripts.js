@@ -8,7 +8,7 @@
 
 
 //import files to delete, to add o r modify and get information from the API
-import {addCart} from './apiCartProducts.js';
+import {addCart,addProduct} from './apiCartProducts.js';
 //import { add } from './apiPostConsumers.js';
 import { getProducts,getCategories,productsByCategories,productById } from '/js/apiGetConsumers.js';
 
@@ -33,53 +33,7 @@ getCategories();
 //Event listener that let filter the products depending of the category selected
 selectCategories.addEventListener('change', productsByCategories)
 
-//Event listener that submit a new product sending the data to the API
-//formNewProduct.addEventListener('submit',addProduct)
-
-/**
- * When the event listener in the productContainer receive a click
- * checks what button *delete or update* was clicked to decide what
- * action to do.
- */
-function addProduct(event){
-  event.preventDefault();
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  //console.log($_POST['username'])
-  const raw = JSON.stringify(
-    {
-      "id": event.target.id
-    }
-  );
-  
-  const requestOptions = {
-    method: "PATCH",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow"
-  };
-  
-  fetch("http://localhost:3000/carts/add", requestOptions)
-    .then((response) => response.text())
-    .then((result) =>{ console.log(result)
-    //indicate that the product was added
-    const addAlertNode=document.getElementById("addAlert")
-    addAlertNode.textContent=`The register Number ${event.target.id} was added (only en actual session).`
-    addAlertNode.style.display="block"
-        setTimeout (() =>{
-          addAlertNode.style.display="none"
-          }, 5000) }
-  )
-    .catch((error) => console.error(error));
-
-
-  
-}
 
 //event listenter occur when a button of any product is clicked.
 productContainer.addEventListener('click',addProduct)
 
-//event listener that calls an API when the form in the modal
-//is subimited to send the product data to be modify with the
-//API
-//formUpdateProduct.addEventListener('submit',modifyProduct)
