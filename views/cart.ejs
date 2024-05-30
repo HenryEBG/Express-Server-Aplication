@@ -23,7 +23,13 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li> -->
                         <!-- <li class="nav-item"><a class="nav-link" href="#!">Filter <select name="categories" id="categories"><option value="">All Products</option></select></a></li> -->
-                        <li class="nav-item"><a class="nav-link" href="http://localhost:3000/user/store">Store</a></li>
+        
+                        <li class="nav-item"><a class="nav-link" id="storeback">Store</a></li>
+                        <script> 
+                                //adding the link to return to the store page.  Using a router and a template API
+                                const mylink=document.getElementById("storeback");
+                                mylink.setAttribute("href",`http://localhost:3000/users/store/${sessionStorage.getItem("userid")}`)
+                        </script>
                 </div>
             </div>
         </nav>
@@ -41,7 +47,7 @@
           <div class="alert alert-danger text-center" style="display: none" id="deleteAlert" role="alert">
             This is a danger alert—check it out!
           </div>
-          <div id="user" style="display: none;"><%=user %></div>
+          <div id="user" style="display: none;"><%=userid %></div>
         <!-- Section  here will be display the products-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">

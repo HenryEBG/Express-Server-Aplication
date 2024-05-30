@@ -10,7 +10,7 @@ const User = require("../data/user");
 
 //validate user when login
 const auth = ((req, res, next) => {
-  if (User.length<1) {
+  if (User.length) {
     if (req.body.username && req.body.password) {
       const myUser = users.find((u) => u.username == req.body.username && u.password == req.body.password)
       
@@ -45,8 +45,18 @@ router
 router
   .route("/store")
   .post(auth, (req, res,next) => {
-    res.render("store", { title: "Welcomte to my Fake Store" });
+    const myUser=users.find((u) => u.username == req.body.username && u.password == req.body.password)
+    res.render("store", { title: `Welcome to my Fake Store ${req.body.username}`,username: req.body.username, userid : myUser.id});
     next();
   });
+
+  router
+  .route("/store/:id")
+  .get((req, res,next) => {    
+    const myUser=users.find((u) => u.id == req.params.id)
+    res.render("store", { title: `Welcome to my Fake Store ${myUser.username}`,username: myUser.username, userid : myUser.id});
+    next();
+  });
+
 
 module.exports = router;

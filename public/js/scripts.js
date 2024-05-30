@@ -8,7 +8,7 @@
 
 
 //import files to delete, to add o r modify and get information from the API
-import {addCart,addProduct} from './apiCartProducts.js';
+import {addProduct} from './apiCartProducts.js';
 //import { add } from './apiPostConsumers.js';
 import { getProducts,getCategories,productsByCategories,productById } from '/js/apiGetConsumers.js';
 

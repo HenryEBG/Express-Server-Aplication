@@ -6,6 +6,10 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title><%=title %></title>
+        <script>
+        sessionStorage.setItem("username", "<%=username %>")
+        sessionStorage.setItem("userid", "<%=userid %>")
+        </script>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -17,13 +21,13 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">My API Store</a>
+                <a class="navbar-brand" href="#!">Welcome to my API Store <b><%=username%></b>  </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="#!">Filter <select name="categories" id="categories"><option value="">All Products</option></select></a></li>
-                        <li class="nav-item"><a class="nav-link" href="http://localhost:3000/carts/">Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="http://localhost:3000/carts/<%=userid %>">Cart</a></li>
                 </div>
             </div>
         </nav>

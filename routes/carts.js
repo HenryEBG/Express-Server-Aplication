@@ -5,126 +5,108 @@ const User = require("../data/user");
 const products = require("../data/products");
 
 router
-  .route("/")
-  .get((req,res,next)=> {
-    res.render("cart", { title: "Thanks for buying",user: User[0].id });
-    next();   
+  .route("/:id")
+  .get((req, res, next) => {
+    res.render("cart", { title: `Thanks for buying here ${req.params.id}`, userid: req.params.id });
+    next();
   });
 
+
+
+//router to get all the products of one cart  
 router
-.route("/products/:id")
-.get((req,res,next) => {
-  const existUserCart = carts.find((c) => c.userId == req.params.id)
-  if(existUserCart===undefined){
-    res.send([]);
-    next();
-    
-  } else {
-    const listProducts=[];
-    existUserCart.products.forEach((p,i) => {
-        const foundProduct = products.find((product)=> product.id == p.productId )
-        if(foundProduct){
-          listProducts.push({product : foundProduct,quantity : p.quantity})
+  .route("/products/:id")
+  .get((req, res, next) => {
+    console.log(req.params.id)
+    console.log(carts)
+    const existUserCart = carts.find((c) => c.userId == req.params.id)
+    console.log(existUserCart);
+    if (existUserCart === undefined) {
+      console.log("we don't get products")
+      res.send([]);
+
+      next();
+
+    } else {
+      console.log("we got products")
+      const listProducts = [];
+      existUserCart.products.forEach((p, i) => {
+        const foundProduct = products.find((product) => product.id == p.productId)
+        if (foundProduct) {
+          listProducts.push({ product: foundProduct, quantity: p.quantity })
         }
-    }   )
+      })
 
-    res.send(listProducts);
-    next();
-  }
-})
+      res.send(listProducts);
+      next();
+    }
+  })
 
-router
-.route("/productsShow")
+
 
 router
   .route("/add")
   .patch((req, res) => {
-  //  console.log(req.body.id)
-      //create a const to save temporarly the cart of this user if exists
-    const existUserCart = carts.find((c) => c.userId == User[0].id)
-    if(existUserCart===undefined){//doesn't exist a cart for this user
-     console.log("estoy en que no existe el carro")
+    //  console.log(req.body.id)
+    //create a const to save temporarly the cart of this user if exists
+    const existUserCart = carts.find((c) => c.userId == req.body.userid)
+    console.log("adding product to the cart")
+    if (existUserCart === undefined) {//doesn't exist a cart for this user
       carts.push(
         {
-          id:carts.length+1,
-          userId:User[0].id,
-          date:'2020-03-02T00:00:00.000Z',
-       
-        products:[
-          {productId:req.body.id,quantity:1}
-        ]
-      }
+          id: carts.length + 1,
+          userId: req.body.userid,
+          date: '2020-03-02T00:00:00.000Z',
+
+          products: [
+            { productId: req.body.id, quantity: 1 }
+          ]
+        }
       )
-      console.log(carts)
-      console.log(req.body.id)
     }
-    else{//in this case exist a cart for this user
-       //find if the product added is in the list of the cart
-       const productUserCart = existUserCart.products.find((p) => p.productId == req.body.id)
-       //if product not exist add the product
-       if (productUserCart===undefined) {
-        console.log("estoy en que existe la cart pero no el producto")
-        existUserCart.products.push({productId:req.body.id,quantity:1})
-        console.log(existUserCart)
-  
-       }  //increment the product
-       else{
-        console.log("estoy en que existe la cart y el producto")
+    else {//in this case exist a cart for this user
+      //find if the product added is in the list of the cart
+      const productUserCart = existUserCart.products.find((p) => p.productId == req.body.id)
+      //if product not exist add the product
+      if (productUserCart === undefined) {
+        //console.log("estoy en que existe la cart pero no el producto")
+        existUserCart.products.push({ productId: req.body.id, quantity: 1 })
+
+      }  //increment the product
+      else {
         productUserCart.quantity++
-        console.log(productUserCart)
-       }
+      }
     }
     return res.sendStatus(200);
 
   }
 
-    // if(req.body && req.body.length>0){
-  
-   
+  );
 
-       
-    // }
-    // else{
-    //   res.sendStatus(400)
-  //  }
-    
-    // //if cart exists
-    // if (existUserCart) {
-    //   //find if the product added is in the list of the cart
-    //   const productUserCart = existUserCart.products.find((p) => p.productID == req.body.id)
-    //   //if product exist just increment quantity
-    //   if (productUserCart) {
-    //     productUserCart.quantity++
-    //   }
-    //   else {//if the cart exist but not exist the product we add the product with quantity=1
-    //     const newProduct = { productId: req.body.id, quantity: 1 }
-    //     productUserCart.products.push(newProduct);
-    //   }
-    // } else {//if the cart of this user not exist and is the first product add we add the cart
-    //   //create a variable to get the next number in the carts list
-    //   let nextCart;
-    //   //if cart is not empty we get the lenght +1 as number of the  next cart
-    //   if (carts.lenght > 0) {
-    //     nextCart = carts.lenght + 1
-    //   } else {//if cart list is empty we give the number 1 to the next cart
-    //     nextCart = 1;
-    //   }
-    //   //create an object to add at the cart list
-    //   const newCart = {
-    //     id: nextCart,//number of the cart
-    //     userId: User.userId,//the ID of the customer/user
-    //     products: [
-    //       {
-    //         productId: req.body.id,//the id of the product added
-    //         quantity: 1 //quantity =1
-    //       }
-    //     ]
-    //   }
-    //   carts.push(newCart);
-    //   
-    // }
-    // console.log(carts)
-  
- );
+//router to delete products
+router
+  .route("/:id")
+  .delete((req, res) => {
+    if (req.query.userid) {
+      const existUserCart = carts.find((c) => c.userId == req.query.userid)
+      if (existUserCart) {
+        const productUserCart = existUserCart.products.find((p) => p.productId == req.params.id)
+        if (productUserCart) {
+          existUserCart.products.splice(existUserCart.products.indexOf(productUserCart), 1)
+          if (existUserCart.products.length == 0) {
+            carts.splice(carts.indexOf(existUserCart), 1);
+          }
+          res.send(req.params.id)
+        } else {
+          res.send(false)
+        }
+      } else {
+        res.send(false)
+      }
+    } else {
+      res.send(false)
+    }
+  }
+  );
 
 module.exports = router;
